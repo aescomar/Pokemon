@@ -6,8 +6,7 @@
   <div class="conten">
 
     <div style="display:flex; margin:1rem 0; justify-content: space-between;">
-      <input id="filtro" style="width:clamp(15rem, 20vw, 23rem);" type="text" placeholder="&#128269;&#65038;   Buscar" [(ngModel)]="filtro" />
-        <button (click)="filtrar()">pp</button>
+      <input id="filtro" style="width:clamp(15rem, 20vw, 23rem);" type="text" placeholder="&#128269;&#65038; Buscar" [(ngModel)]="filtro" (input)="filtrar($event)"/>
       <button class="btn" style="background-color:darkgreen; font-size:medium; color: white" (click)="editar(-1)"><span><b>+</b> Nuevo</span></button>
     </div>
 
@@ -24,8 +23,6 @@
             </tr>
           </thead>
           <tbody>
-            <!--tr ng-repeat="item in aUsuario | filter: filtro" ng-click="selUsuario($index)"
-                ng-class="(filaIndex == $index) ? 'filaActiva' : '' "-->
             <tr *ngFor="let item of pokemones; let i = index" ngClass="filaIndex == i ? 'filaActiva' : ''">
                 <td hidden>{{item.id}}</td>
                 <td>{{ item.name }}</td>
@@ -57,16 +54,19 @@
     
     <div>
       <p class="">Ataque</p>
-      <input type="number" class="form-control rounded-10" value="{{itemSel?.ataque}}"  [(ngModel)] = "attack" name = "attack">       
+      <input type="range" name="numrango" value="25" min="0" max="100" step="5" value="{{itemSel?.ataque}}"  [(ngModel)] = "attack" name = "attack">       
       <p class="">Defensa</p>
-      <input type="number" class="form-control rounded-10" value="{{itemSel?.defensa}}" [(ngModel)] = "defense" name = "defense" > 
+      <input type="range" name="numrango" value="25" min="0" max="100" value="{{itemSel?.defensa}}" [(ngModel)] = "defense" name = "defense" > 
     </div>
  
   </div>
 
   <div style="display: flex;margin-top: 2rem;">
-    <button class="btn" type="submit" 
+    <button class="btn" type="submit" *ngIf="itemSel?.name == null"
        (click)="nuevo(itemSel)"><i class="fas fa-check"></i>Grabar</button>
+       <p class="mb-1 ps-2">&nbsp;</p>
+    <button class="btn" type="submit" *ngIf="itemSel?.id > 0"
+       (click)="modificar(itemSel)"><i class="fas fa-check"></i>Grabar</button>
        <p class="mb-1 ps-2">&nbsp;</p>
     <button class="btn" type="submit" style="color: var(--gris3); background-color: var(--color4);"
         (click)="cerrarModal(itemSel.id)"><i class="fas fa-check"></i>Cancelar</button>

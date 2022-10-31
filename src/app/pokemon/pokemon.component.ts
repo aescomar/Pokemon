@@ -47,18 +47,15 @@ export class PokemonComponent implements OnInit {
   constructor(private pokemonService: PokemonService, private router: Router) { }
 
   ngOnInit(): void {
-    //this.pokemonService.ValIngCanal()
-    this.cargando=true
-    //this.cargaInicial(0)
     this.ListaPokemon()
-    //this.perfil.idProducto=0
   }
 
   async ListaPokemon() {
     this.cargando = true;
     await this.pokemonService.GetLista().toPromise()
     .then((res) => {
-      this.pokemones=res //.datos
+      this.pokemones=res 
+      this.pokecopia= this.pokemones
       this.limpiar()
     });
   }
@@ -70,7 +67,7 @@ export class PokemonComponent implements OnInit {
     this.cargando = true;
     await this.pokemonService.Borrar(id).toPromise()
     .then((res) => {
-      this.pokemones=res //.datos
+      this.pokemones=res 
       this.ListaPokemon()
     });
   }
@@ -89,29 +86,31 @@ export class PokemonComponent implements OnInit {
   }
 
   async modificar(item: any) {
+    console.log('ooo',item)
     this.pockemon.id = item.id
-    this.pockemon.name = item.name
-    this.pockemon.image = item.image
-    this.pockemon.attack = item.attack
-    this.pockemon.defense = item.defense
-    await this.pokemonService.GetLista().toPromise()
+    this.pockemon.name = this.name
+    this.pockemon.image = this.image
+    this.pockemon.attack = this.attack
+    this.pockemon.defense = this.defense
+    await this.pokemonService.Editar(this.pockemon).toPromise()
     .then((res) => {
-      this.pokemones=res //.datos
-      this.pokecopia=res
-      //console.log(this.pokemones)
+      this.ListaPokemon()
+      this.cerrarModal(0)
     });
   }
 
-  filtrar() {
-    this.pokemones = this.pokecopia.filter((x:any) => x.name.includes(this.filtro) )
-    //this.pokemones = this.pokecopia.filter(this.pokecopia.includes(this.filtro))
-    console.log("mm",this.pokemones);
-    
+  filtrar(e: any) {
+    const buscar: string = e.target.value
+    this.pokemones = this.pokecopia.filter((x:any) => { return x.name.toLowerCase().includes(buscar.toLowerCase())} )
   }
 
   editar(item:any) {
-    this.itemSel = item
-    //this.nProySel = item.proy    
+    this.itemSel = item    
+    this.id = this.itemSel.id
+    this.name = this.itemSel.name
+    this.image = this.itemSel.image
+    this.attack = this.itemSel.attack
+    this.defense = this.itemSel.defense
     const modal:any = document.querySelector("#modal")
     modal.showModal()   
   }
@@ -125,9 +124,6 @@ export class PokemonComponent implements OnInit {
   }
 
   cerrarModal(nInd:number) {
-    /*var j = this.lEjecutivo.findIndex((x:any) => x.identAsignacion == nInd)   
-    this.lEjecutivo[j].proy = this.nProySel
-    this.Actualiza(nInd, this.nProySel, 0 )*/
     const modal:any = document.querySelector("#modal")
     modal.close()
   }
