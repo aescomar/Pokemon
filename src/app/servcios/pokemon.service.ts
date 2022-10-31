@@ -20,7 +20,6 @@ export class PokemonService {
   }
 
   public Agregar(body:any): Observable<any> {
-    console.log("www", body)
     return this.http.post<any>(this.pokemonUrl, body, this.httpOptions );
   }
 
@@ -29,7 +28,8 @@ export class PokemonService {
   }
 
   public Editar(body:any): Observable<any> {
-    return this.http.put<any>(this.pokemonUrl, body );
+    console.log('jjj',body)
+    return this.http.put<any>(this.pokemonUrl + body.id, body );
   }
 }
 
