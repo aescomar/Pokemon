@@ -1,0 +1,80 @@
+<!--header ng-include="'Vista/wmenu.html'"></header-->
+<section style="margin:1vh auto; width:clamp(90%, 90vw, 50rem);">
+
+  <div style="margin:4rem;" class="opcion"><div class="opcion2">P O K E M O N &nbsp;&nbsp; - &nbsp;&nbsp; (c) A. Escobedo</div></div>
+
+  <div class="conten">
+
+    <div style="display:flex; margin:1rem 0; justify-content: space-between;">
+      <input id="filtro" style="width:clamp(15rem, 20vw, 23rem);" type="text" placeholder="&#128269;&#65038;   Buscar" [(ngModel)]="filtro" />
+        <button (click)="filtrar()">pp</button>
+      <button class="btn" style="background-color:darkgreen; font-size:medium; color: white" (click)="editar(-1)"><span><b>+</b> Nuevo</span></button>
+    </div>
+
+      <div style="height:70vh; overflow-x:auto;">
+        <table cellspacing="0"  style="width: 100%;" >
+          <thead>
+            <tr >
+                <td hidden></td>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Ataque</th>
+                <th>Defensa</th>
+                <th><small>Acciones</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--tr ng-repeat="item in aUsuario | filter: filtro" ng-click="selUsuario($index)"
+                ng-class="(filaIndex == $index) ? 'filaActiva' : '' "-->
+            <tr *ngFor="let item of pokemones; let i = index" ngClass="filaIndex == i ? 'filaActiva' : ''">
+                <td hidden>{{item.id}}</td>
+                <td>{{ item.name }}</td>
+                <td><img src="{{ item.image}}" width="30" height="40">  </td>
+                <td>{{ item.attack}}</td>
+                <td>{{ item.defense}}</td>
+                <td style="cursor:pointer; margin: 0; width: 10rem;">
+                <a id="edit" name="edit" style="color: inherit;" (click)="editar(item)">+ Editar</a>&nbsp;&nbsp;
+                <a id="borrar" name="edit" style="color: inherit;" (click)="borrar(item.id)">x Borrar</a>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+  </div>
+</section>
+
+<!-- MODAL EDICION POKEMON -->
+<dialog id="modal" style="width:40%; align-content: center;  padding: 5rem;">
+   <div style="margin: auto; margin-bottom: 2rem;">{{itemSel?.name == null ? "Nuevo" : "Modificar" }} Pokemon</div>
+   <div style = "display:flex; width: 100%;align-content: center;">
+    <div>
+      <p class="">Nombre</p>
+      <input type="text" class="rounded-10" value="{{itemSel?.name}}" [(ngModel)] = "name" name = "name">       
+      <p class="">Imagen</p>
+      <input type="text" class="form-control rounded-10" value="{{itemSel?.image}}"  [(ngModel)] = "image" name = "image" >             
+    </div>
+    
+    <div>
+      <p class="">Ataque</p>
+      <input type="number" class="form-control rounded-10" value="{{itemSel?.ataque}}"  [(ngModel)] = "attack" name = "attack">       
+      <p class="">Defensa</p>
+      <input type="number" class="form-control rounded-10" value="{{itemSel?.defensa}}" [(ngModel)] = "defense" name = "defense" > 
+    </div>
+ 
+  </div>
+
+  <div style="display: flex;margin-top: 2rem;">
+    <button class="btn" type="submit" 
+       (click)="nuevo(itemSel)"><i class="fas fa-check"></i>Grabar</button>
+       <p class="mb-1 ps-2">&nbsp;</p>
+    <button class="btn" type="submit" style="color: var(--gris3); background-color: var(--color4);"
+        (click)="cerrarModal(itemSel.id)"><i class="fas fa-check"></i>Cancelar</button>
+  </div>              
+
+</dialog>
+ 
+
+
+
+
